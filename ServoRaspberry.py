@@ -1,3 +1,5 @@
+import RPi.GPIO as GPIO
+
 class Servo(object):
   
   def  __init__(self,puerto):
