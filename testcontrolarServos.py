@@ -1,10 +1,10 @@
 
 import RPi.GPIO as GPIO    #Importamos la libreria RPi.GPIO
 import time                #Importamos time para poder usar time.sleep
-import ServoRaspberry.Servo as Servo
+import ServoRaspberry
 
 
-
+Servo = ServoRaspberry.Servo
 
 
 GPIO.setmode(GPIO.BOARD)   #Ponemos la Raspberry en modo BOARD
