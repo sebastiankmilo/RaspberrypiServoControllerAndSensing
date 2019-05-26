@@ -1,6 +1,6 @@
 
 import RPi.GPIO as GPIO    #Importamos la libreria RPi.GPIO
-#import time
+import time
 from datetime import datetime, date, time, timedelta                #Importamos time para poder usar time.sleep
 import ServoRaspberry
 
