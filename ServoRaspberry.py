@@ -13,5 +13,7 @@ class Servo(object):
     pass
   def stop(self):
     self.p.stop()
+    GPIO.cleanup() 
     pass
+  
   pass

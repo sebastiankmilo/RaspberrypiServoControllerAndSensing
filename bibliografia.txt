@@ -1,0 +1,6 @@
+
+
+Configuración para acceder a la consola por usb
+
+https://hacks.mozilla.org/2017/02/headless-raspberry-pi-configuration-over-bluetooth/
+https://www.instructables.com/id/Raspberry-Pi-Bluetooth-to-PuTTY-on-Windows-10/

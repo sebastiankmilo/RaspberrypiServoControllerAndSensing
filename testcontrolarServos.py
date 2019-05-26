@@ -20,5 +20,5 @@ try:
     
 except KeyboardInterrupt:         #Si el usuario pulsa CONTROL+C entonces...
     servo.stop()                      #Detenemos el servo 
-    GPIO.cleanup() 
+    
 
