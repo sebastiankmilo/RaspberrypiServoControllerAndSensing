@@ -15,6 +15,8 @@ try:
     time.sleep(0.5)           #pausa de medio segundo
     servo.angle(grados=7.5)#p.ChangeDutyCycle(7.5)    #Enviamos un pulso del 7.5% para centrar el servo de nuevo
     time.sleep(0.5) 
+    while True:
+        time.sleep(1)
     
 except KeyboardInterrupt:         #Si el usuario pulsa CONTROL+C entonces...
     servo.stop()                      #Detenemos el servo 
