@@ -19,14 +19,14 @@ def Leer(servos):
     
 def abrir(Servos):
   for servo in Servos:
-    servo.angle(180)
+    servo.angle(grados=180)
     pass  
   time.sleep(4)
   pass
 
 def cerrar(Servos):
   for servo in Servos:
-    servo.angle(90)
+    servo.angle(grados=90)
     pass  
   time.sleep(4)
   pass
@@ -47,13 +47,13 @@ GPIO.setmode(GPIO.BOARD)
 #Servo4 = ServoRaspberry.Servo(puerto = 11) #Defino donde va a estar conectado el servo 4 puertos GPIO  de la raspberrypi
 #Servo5 = ServoRaspberry.Servo(puerto = 12) #Defino donde va a estar conectado el servo 5  a los puertos GPIO  de la raspberrypi
 
-puertos=[8,9,10,11,12]
+puertos=[8,10,11,12,13]
 pos=0
-servos = [0 for i in range(4)] #array q contiene los 4 servos
-for servo in servos:
-  servo = ServoRaspberry.Servo(puerto = puertos[pos])
-  pos=pos+1
-  pass
+servos = [ ServoRaspberry.Servo(puerto = puertos[i]) for i in range(4)] #array q contiene los 4 servos
+#for servo in servos:
+#  servo = ServoRaspberry.Servo(puerto = puertos[pos])
+#  pos=pos+1
+#  pass
 
 
 
