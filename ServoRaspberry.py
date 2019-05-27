@@ -5,7 +5,7 @@ class Servo(object):
   def  __init__(self,puerto):
     GPIO.setup(puerto,GPIO.OUT) #Ponemos el pin puerto como el modo deseado(salida o entrada)
     self.p = GPIO.PWM(puerto,50)
-    self.p.start(map(grados,90,214,2.1,11.45)) #Enviamos un pulso del 7.5% para centrar el servo
+    self.p.start(map(90,30,214,2.1,11.45)) #Enviamos un pulso del 7.5% para centrar el servo
     pass
   def angle(self, grados):
     porcentaje = map(grados,30,214,2.1,11.45)
