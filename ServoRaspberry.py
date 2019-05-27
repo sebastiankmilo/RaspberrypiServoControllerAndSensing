@@ -8,7 +8,7 @@ class Servo(object):
     self.p.start(7.5) #Enviamos un pulso del 7.5% para centrar el servo
     pass
   def angle(self, grados):
-    porcentaje = map(grados,0,225,2.25,11.25)
+    porcentaje = map(grados,0,18,235,2,11.45)
     self.p.ChangeDutyCycle(porcentaje)
     pass
   def stop(self):
