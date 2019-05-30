@@ -4,22 +4,16 @@ import time
 import RPi.GPIO as GPIO    #Importamos la libreria RPi.GPIO
 import ServoRaspberry
 from Arduino import Arduino #se debe instalar  pip3 install arduino-python3
-import pandas as pd #se debe instalar sudo apt-get install python-pandas
+import pandas as pd #se debe instalar sudo apt-get install python3-pandas
 import csv
-from pyexcel.cookbook import merge_all_to_a_book #instalar  pip install pyexcel pyexcel-xlsx
+from pyexcel.cookbook import merge_all_to_a_book #instalar  sudo pip3 install pyexcel pyexcel-xlsx
 import glob
 
 
 # Función que es llamada por los eventos
 def tarea(servos,horario):
     abrir(Servos=servos) ##mover los servos para ponerlos en la posición en la cual puedan tomar datos
-    comienzo = time.time() ##guardo el tiempo en el cual lo servos ya estan en posición para tomar datos
-    tiempoEjecuecion = 5  #defino por cuanto tiempo voy a tomar los datos
-    final = comienzo + tiempoEjecuecion #defino en que momento se deja de tomar los datos
-    cant = 0
-    while final > time.time():
-      cant = cant +1 #recivir la información del arduino
-      pass
+    leer(horario=horario)
     cerrar(Servos=servos) #Muevo los servos
     pass
     
