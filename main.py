@@ -3,9 +3,15 @@ from datetime import time as tm
 import time
 import RPi.GPIO as GPIO    #Importamos la libreria RPi.GPIO
 import ServoRaspberry
+from Arduino import Arduino #se debe instalar  pip3 install arduino-python3
+import pandas as pd #se debe instalar sudo apt-get install python-pandas
+import csv
+from pyexcel.cookbook import merge_all_to_a_book #instalar  pip install pyexcel pyexcel-xlsx
+import glob
+
 
 # Función que es llamada por los eventos
-def Leer(servos):
+def tarea(servos,horario):
     abrir(Servos=servos) ##mover los servos para ponerlos en la posición en la cual puedan tomar datos
     comienzo = time.time() ##guardo el tiempo en el cual lo servos ya estan en posición para tomar datos
     tiempoEjecuecion = 5  #defino por cuanto tiempo voy a tomar los datos
@@ -30,7 +36,55 @@ def cerrar(Servos):
     pass  
   time.sleep(4)
   pass
+def map(x, in_min, in_max, out_min, out_max):
 
+   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+   pass
+def voltaje(arduino,puerto):
+   sensorValue=board.analogRead(puerto) ##leer
+   return  map(sensorValue, 0, 1023, 0.0, 5.0)
+def leer (horario):
+  horario=horario
+  cant = 0
+  datos={}
+  medidas = ["planta1","planta2","planta3","planta4","planta5"]
+  puertos = [0,1,2,3,4,5,6,7,8,9]
+  lecturasAnalogas = {}
+  for planta in medidas:  #inicializo datos("key1"=[])   
+        try:
+            datos[planta] =[]
+        except KeyError:
+            datos[planta] = []
+        pass
+  board = Arduino()
+  comienzo = time.time()
+  tiempoEjecuecion = 5
+  final = comienzo + tiempoEjecuecion #defino en que momento se deja de tomar los datos
+  while final > time.time(): #lee los datos durante 5 segundos
+    try:        
+        for puerto in puertos:   # leyendo el voltaje de los puertos analógicos     
+            lecturasAnalogas[puerto] =voltaje(arduino=board,puerto=puerto)#envió la orden para leer datos analogico y enviarmelos
+            pass
+        for planta in medidas: #voy a almacenar los datos que le corresponden a cada planta
+            try:
+                puerto = planta.replace("planta","") #dejo solo el numero de la planta
+                puerto1 = int(puerto)*2-1 #el numero de la planta tiene una relacion numerica con los puertos que le corresponden
+                puerto2 = puerto1 - 1
+                datos[planta].append(lecturasAnalogas[puerto1] - lecturasAnalogas[puerto2]) #resto el valor de los puertos y se los asigno a la planta correspondiente
+            except KeyError:
+                datos[planta] = 0.0 #por si no hay puerto para esa planta
+            pass
+    
+    except KeyboardInterrupt: 
+        board.close()
+    pass
+  board.close() 
+  dfDatos = pd.DataFrame(datos) #convierto el diccionario a un DataFrame
+  nombreArchivo = str(datetime.now().year)+"-"+str(+datetime.now().month)+"-"+str(datetime.now().day)
+  nombreArchivo = nombreArchivo+horario
+  dfDatos.reset_index().to_csv(nombreArchivo+".csv",header =True, index = None, index_label=None) #almaceno los datos en un archivo de texto plano con formato .csv  
+  merge_all_to_a_book(glob.glob(nombreArchivo+".csv"), nombreArchivo+".xlsx") #almaceno los datos de texto plano en un formato xlsx
+  pass
 
 mañana = tm(23,55,0) #Mañana
 tarde = tm(23,56,0) #Tarde
@@ -68,14 +122,14 @@ while test :
   horarios["actual"] = tm(datetime.now().hour,datetime.now().minute,datetime.now().second)
   if horarios["actual"] >= horarios["mañana"] :
     print("mañana")
-    Leer(servos=servos)
+    tarea(servos=servos,horario="mañana")
     mañana = True
     while mañana :
       time.sleep(1)
       horarios["actual"] = tm(datetime.now().hour,datetime.now().minute,datetime.now().second)
       if horarios["actual"] >= horarios["tarde"] :
         print("tarde")
-        Leer(servos=servos)
+        tarea(servos=servos,horario="tarde")
         mañana = False
         tarde = True
         while tarde:
@@ -84,7 +138,7 @@ while test :
           if horarios["actual"] >= horarios["noche"] :
             tarde = False
             noche = True
-            Leer(servos)
+            tarea(servos,servos=servos,horario="noche")
             print("noche")
             while noche :
               time.sleep(1)
