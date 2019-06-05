@@ -3,10 +3,10 @@ from datetime import time as tm
 import time
 import RPi.GPIO as GPIO    #Importamos la libreria RPi.GPIO
 import ServoRaspberry
-from Arduino import Arduino #se debe instalar  pip3 install arduino-python3
-import pandas as pd #se debe instalar sudo apt-get install python3-pandas
+from Arduino import Arduino #se debe instalar:  pip3 install arduino-python3
+import pandas as pd #se debe instalar: sudo apt-get install python3-pandas
 import csv
-from pyexcel.cookbook import merge_all_to_a_book #instalar  sudo pip3 install pyexcel pyexcel-xlsx
+from pyexcel.cookbook import merge_all_to_a_book #instalar:  sudo pip3 install pyexcel pyexcel-xlsx
 import glob
 
 
@@ -18,9 +18,18 @@ def tarea(servos,horario):
     pass
     
 def abrir(Servos):
+  #angulos=[40,50,60,70,80]
+  #i=0
   for servo in Servos:
     servo.angle(grados=180)
+    #servo.angle(grados=angulos[i])
+    #i=i+1
     pass  
+  #Servos[0].angle(180)
+  #Servos[1].angle(180)
+  #Servos[2].angle(180)
+  #Servos[3].angle(180)
+  #Servos[4].angle(180)
   time.sleep(4)
   pass
 
@@ -30,6 +39,7 @@ def cerrar(Servos):
     pass  
   time.sleep(4)
   pass
+
 def map(x, in_min, in_max, out_min, out_max):
 
    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
@@ -42,7 +52,7 @@ def leer (horario):
   cant = 0
   datos={}
   medidas = ["planta1","planta2","planta3","planta4","planta5"]
-  puertos = [0,1,2,3,4,5,6,7,8,9]
+  puertos = [0,1,2,3,4,5]
   lecturasAnalogas = {}
   for planta in medidas:  #inicializo datos("key1"=[])   
         try:
@@ -52,22 +62,34 @@ def leer (horario):
         pass
   board = Arduino()
   comienzo = time.time()
-  tiempoEjecuecion = 5
+  tiempoEjecuecion = 5 
   final = comienzo + tiempoEjecuecion #defino en que momento se deja de tomar los datos
   while final > time.time(): #lee los datos durante 5 segundos
     try:        
         for puerto in puertos:   # leyendo el voltaje de los puertos analógicos     
             lecturasAnalogas[puerto] =voltaje(arduino=board,puerto=puerto)#envió la orden para leer datos analogico y enviarmelos
             pass
+        
+        
+        #datos["planta1"].append(lecturasAnalogas[0] - lecturasAnalogas[1])
+        #datos["planta2"].append(lecturasAnalogas[2] - lecturasAnalogas[3])
+        #datos["planta3"].append(lecturasAnalogas[4] - lecturasAnalogas[5])
+        #datos["planta4"].append(lecturasAnalogas[6] - lecturasAnalogas[7])
+        #datos["planta5"].append(lecturasAnalogas[8] - lecturasAnalogas[9])
         for planta in medidas: #voy a almacenar los datos que le corresponden a cada planta
             try:
-                puerto = planta.replace("planta","") #dejo solo el numero de la planta
-                puerto1 = int(puerto)*2-1 #el numero de la planta tiene una relacion numerica con los puertos que le corresponden
-                puerto2 = puerto1 - 1
-                datos[planta].append(lecturasAnalogas[puerto1] - lecturasAnalogas[puerto2]) #resto el valor de los puertos y se los asigno a la planta correspondiente
-            except KeyError:
+                #datos["planta1"].append(lecturasAnalogas[0] - lecturasAnalogas[1])
+                #datos["planta2"].append(lecturasAnalogas[2] - lecturasAnalogas[3])
+                #datos["planta3"].append(lecturasAnalogas[4] - lecturasAnalogas[5])
+                #datos["planta4"].append(lecturasAnalogas[6] - lecturasAnalogas[7])
+                #datos["planta5"].append(lecturasAnalogas[8] - lecturasAnalogas[9])
+               puerto = planta.replace("planta","") #dejo solo el numero de la planta
+               puerto1 = int(puerto)*2-1 #el numero de la planta tiene una relacion numerica con los puertos que le corresponden
+               puerto2 = puerto1 - 1
+               datos[planta].append(lecturasAnalogas[puerto1] - lecturasAnalogas[puerto2]) #resto el valor de los puertos y se los asigno a la planta correspondiente
+           except KeyError:
                 datos[planta] = 0.0 #por si no hay puerto para esa planta
-            pass
+        #    pass
     
     except KeyboardInterrupt: 
         board.close()
@@ -102,7 +124,6 @@ servos = [ ServoRaspberry.Servo(puerto = puertos[i]) for i in range(4)] #array q
 #  servo = ServoRaspberry.Servo(puerto = puertos[pos])
 #  pos=pos+1
 #  pass
-
 
 
 

@@ -16,6 +16,9 @@ def Leer(dato):
     print (cant)
     pass
     
+def funcion1()
+  print("soy una función")
+  return 2
 
 mañana = tm(23,55,0) #Mañana
 tarde = tm(23,56,0) #Tarde
@@ -28,6 +31,7 @@ horarios["noche"] = noche
 horarios["actual"] = tm(datetime.now().hour,datetime.now().minute,datetime.now().second)
 print("\tHora1 < Hora2:",horarios["actual"] < horarios["noche"])
 
+horario
 
 
 
@@ -39,7 +43,7 @@ test =True
 while test :
   time.sleep(1)
   horarios["actual"] = tm(datetime.now().hour,datetime.now().minute,datetime.now().second)
-  if horarios["actual"] >= horarios["mañana"] :
+  if horarios["actual"] >= horarios["mañana"] :                                                                                                                                                                                                            
     Leer("mañana")
     mañana = True
     while mañana :
@@ -61,7 +65,7 @@ while test :
               horarios["actual"] = tm(datetime.now().hour,datetime.now().minute,datetime.now().second)
               if horarios["actual"] >= horarios["nuevo día"] :
                 noche = False
-                time.sleep(4)
+                time.sleep(4) 
                 print ("Nuevo Día")
                 pass
               pass 
